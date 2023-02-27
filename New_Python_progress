@@ -1,0 +1,11 @@
+import sys
+
+def update_progress(progress):
+    bar_length = 50
+    block = int(round(bar_length*progress))
+    text = "\rProgress: [{0}] {1:.1f}%".format( "#"*block + "-"*(bar_length-block), progress*100)
+    sys.stdout.write(text)
+    sys.stdout.flush()
+
+# Call the update_progress() function to update the progress bar
+update_progress(0.5) # Replace with your desired progress value

@@ -9,3 +9,25 @@ def update_progress(progress):
 
 # Call the update_progress() function to update the progress bar
 update_progress(0.5) # Replace with your desired progress value
+
+
+Start your instance from aws and run these WinRm commands via the command line.
+winrm quickconfig
+winrm set winrm/config/client '@{AllowUnencrypted="true"}'
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+winrm set winrm/config/client/Auth '@{Basic="true"}'
+winrm set winrm/config/service/auth '@{Basic="true"}'
+winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="1024"}'
+then save the image of this instance (aws ui -> ec2 -> select the instance -> actions -> images and templates -> create an image) and use it for your jenkins slave.
+
+Put these commands in section "User Data" that you will find in the configurations of your jenkins agent (Jenkins UI -> Build Executor Status -> Configure Clouds).
+<powershell>
+winrm quickconfig
+winrm set winrm/config/client '@{AllowUnencrypted="true"}'
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+winrm set winrm/config/client/Auth '@{Basic="true"}'
+winrm set winrm/config/service/auth '@{Basic="true"}'
+winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="1024"}'
+</powershell>
+
+

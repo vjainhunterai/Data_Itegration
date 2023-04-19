@@ -35,4 +35,30 @@ winrm set winrm/config/client @{TrustedHosts="IP_address_or_hostname"}"
 
 
 
+hudson.plugins.ec2.win.WinConnection pingFailingIfSSHHandShakeError
+Failed to verify connectivity to Windows agent
+java.net.SocketTimeoutException: Connect timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:546)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at com.hierynomus.protocol.commons.socket.ProxySocketFactory.createSocket(ProxySocketFactory.java:87)
+	at com.hierynomus.protocol.commons.socket.ProxySocketFactory.createSocket(ProxySocketFactory.java:63)
+	at com.hierynomus.smbj.transport.tcp.direct.DirectTcpTransport.connect(DirectTcpTransport.java:88)
+	at com.hierynomus.smbj.connection.Connection.connect(Connection.java:139)
+	at com.hierynomus.smbj.SMBClient.getEstablishedOrConnect(SMBClient.java:96)
+	at com.hierynomus.smbj.SMBClient.connect(SMBClient.java:71)
+	at hudson.plugins.ec2.win.WinConnection.pingFailingIfSSHHandShakeError(WinConnection.java:135)
+	at hudson.plugins.ec2.win.EC2WindowsLauncher.connectToWinRM(EC2WindowsLauncher.java:190)
+	at hudson.plugins.ec2.win.EC2WindowsLauncher.launchScript(EC2WindowsLauncher.java:52)
+	at hudson.plugins.ec2.EC2ComputerLauncher.launch(EC2ComputerLauncher.java:48)
+	at hudson.slaves.SlaveComputer.lambda$_connect$0(SlaveComputer.java:298)
+	at jenkins.util.ContextResettingExecutorService$2.call(ContextResettingExecutorService.java:46)
+	at jenkins.security.ImpersonatingExecutorService$2.call(ImpersonatingExecutorService.java:80)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+
+
+
 

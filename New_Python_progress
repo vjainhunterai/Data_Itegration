@@ -31,3 +31,8 @@ winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="1024"}'
 </powershell>
 
 
+winrm set winrm/config/client @{TrustedHosts="IP_address_or_hostname"}"
+
+
+
+

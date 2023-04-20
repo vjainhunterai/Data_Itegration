@@ -106,6 +106,48 @@ def test_example(browser):
 pytest --url http://example.com --headless test_example.py
 
 
+------------------
+
+
+
+# content of conftest.py
+
+def pytest_addoption(parser):
+    parser.addoption("--test-name", action="store",
+                     help="Specify the name of the test to run")
+
+@pytest.fixture(scope="session")
+def test_name(request):
+    name = request.config.getoption("--test-name")
+    return name
+
+
+--------
+
+
+# content of test_example.py
+
+def test_one(test_name):
+    if test_name is None or test_name == "test_one":
+        assert True
+    else:
+        assert False
+
+def test_two(test_name):
+    if test_name is None or test_name == "test_two":
+        assert True
+    else:
+        assert False
+
+
+-------------
+
+pytest --test-name test_one test_example.py
+
+
+
+
+
 
 
 

@@ -58,6 +58,53 @@ java.net.SocketTimeoutException: Connect timed out
 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
 	at java.base/java.lang.Thread.run(Thread.java:833)
+	
+	
+	
+	---------------------------------
+	
+	
+	# content of conftest.py
+
+def pytest_addoption(parser):
+    parser.addoption("--url", action="store", default="http://localhost:5000",
+                     help="Specify the URL of the web application under test")
+    parser.addoption("--headless", action="store_true", default=False,
+                     help="Run tests in headless mode (no GUI)")
+
+
+
+# content of conftest.py
+
+import pytest
+from selenium import webdriver
+
+@pytest.fixture
+def browser(request):
+    url = request.config.getoption("--url")
+    headless = request.config.getoption("--headless")
+    
+    options = webdriver.ChromeOptions()
+    if headless:
+        options.add_argument("--headless")
+    
+    driver = webdriver.Chrome(options=options)
+    driver.get(url)
+    
+    yield driver
+    
+    driver.quit()
+
+
+# content of test_example.py
+
+def test_example(browser):
+    # Use the browser fixture to interact with the web application under test
+    ...
+
+
+pytest --url http://example.com --headless test_example.py
+
 
 
 

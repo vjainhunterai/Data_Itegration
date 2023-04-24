@@ -167,6 +167,30 @@ DELIMITER ;
 SELECT caesar_cipher('HELLO', 3); -- returns 'KHOOR'
 
 
+-----------------------------------------------------------------------------------------------------
+
+DELIMITER $$
+
+CREATE FUNCTION caesar_cipher(input_text VARCHAR(255), shift INT) RETURNS VARCHAR(255)
+BEGIN
+    DECLARE output_text VARCHAR(255);
+    DECLARE i INT DEFAULT 1;
+    SET output_text = '';
+    SET shift = shift % 26;
+    IF shift < 0 THEN SET shift = shift + 26; END IF;
+    WHILE i <= LENGTH(input_text) DO
+        SET output_text = CONCAT(output_text, CHAR((ASCII(SUBSTRING(input_text, i, 1)) - 65 + shift) % 26 + 65));
+        SET i = i + 1;
+    END WHILE;
+    RETURN output_text;
+END$$
+
+DELIMITER ;
+
+
+
+
+
 
 
 

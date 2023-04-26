@@ -222,6 +222,42 @@ SELECT caesar_cipher('HELLO', 3, 'encrypt'); -- returns 'KHOOR'
 SELECT caesar_cipher('KHOOR', 3, 'decrypt'); -- returns 'HELLO'
 
 
+-----------------------
+
+DELIMITER $$
+
+CREATE FUNCTION caesar_cipher(input_text VARCHAR(255), key VARCHAR(255), mode VARCHAR(10)) RETURNS VARCHAR(255)
+BEGIN
+    DECLARE output_text VARCHAR(255);
+    DECLARE i INT DEFAULT 1;
+    DECLARE key_length INT;
+    DECLARE shift INT;
+    SET output_text = '';
+    SET key_length = LENGTH(key);
+    
+    IF mode = 'encrypt' THEN
+        WHILE i <= LENGTH(input_text) DO
+            SET shift = ASCII(SUBSTRING(key, i % key_length + 1, 1)) - 65;
+            SET output_text = CONCAT(output_text, CHAR((ASCII(SUBSTRING(input_text, i, 1)) - 65 + shift) % 26 + 65));
+            SET i = i + 1;
+        END WHILE;
+    ELSEIF mode = 'decrypt' THEN
+        WHILE i <= LENGTH(input_text) DO
+            SET shift = ASCII(SUBSTRING(key, i % key_length + 1, 1)) - 65;
+            SET output_text = CONCAT(output_text, CHAR((ASCII(SUBSTRING(input_text, i, 1)) - 65 - shift + 26) % 26 + 65));
+            SET i = i + 1;
+        END WHILE;
+    ELSE
+        SET output_text = 'Invalid mode. Valid modes are "encrypt" and "decrypt".';
+    END IF;
+
+    RETURN output_text;
+END$$
+
+DELIMITER ;
+
+
+
 
 
 

@@ -348,6 +348,25 @@ updated_by varchar(50)
 );
 
 
+------------------------
+
+Use the BINARY data type instead of VARCHAR for the input, key, and output parameters. 
+This can improve performance by reducing the amount of character set conversion that needs to be done.
+
+Use the CHAR_LENGTH() function instead of the LENGTH() function to get the length of the input and key strings.
+The CHAR_LENGTH() function is faster than the LENGTH() function because it counts the number of characters in the string, not the number of bytes.
+
+Use a stored procedure instead of a function. Stored procedures can be faster than functions because they are precompiled and cached in memory, 
+whereas functions are compiled and executed every time they are called.
+
+Use prepared statements to execute the SQL code. Prepared statements can improve performance by reducing the amount of parsing and optimization
+that needs to be done by the MySQL server.
+
+Consider using a different encryption algorithm that is better suited for use in a database environment, such as AES encryption.
+
+
+---------------------
+
 
 
 

@@ -1,0 +1,24 @@
+FROM dockerfile:java_vineet
+
+COPY Docker_test_0.1.zip  /usr/src/app/
+  # Copy your script to the container
+WORKDIR  /usr/src/app
+
+RUN yum install -y coreutils
+RUN yum install -y unzip
+RUN unzip /usr/src/app/Docker_test_0.1.zip
+#RUN ls /usr/src/app/Docker_test/
+RUN rm -rf /usr/src/app/Docker_test_0.1.zip
+#RUN chmod +x Docker_test_run.sh
+#WORKDIR  /usr/src/app/Docker_test
+#RUN pwd &&  ls -a
+# Set working directory
+
+VOLUME /data
+
+RUN pwd && ls -s
+RUN cd ./Docker_test
+RUN pwd && ls -s
+CMD ["sh","./Docker_test/Docker_test_run.sh"]
+ # Command to execute
+

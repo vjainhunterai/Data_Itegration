@@ -24,3 +24,9 @@ Start Jenkins as a service:
 You can check the status of the Jenkins service using the command:
 
 [ec2-user ~]$ sudo systemctl status jenkins
+
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+

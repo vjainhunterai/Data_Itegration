@@ -1,1 +1,79 @@
-SELECT `C4`, `C7`, `INVOICE_NUMBER`, `INVC_ITEM_DESCRIPTION`, `INVC_START_DT`, `C1` FROM (SELECT `C4`, `C7`, `INVOICE_NUMBER`, `INVC_ITEM_DESCRIPTION`, `INVC_START_DT`, sum(`INVC_LINE_VALUE`) AS `C1` FROM (SELECT `OTBL`.`INVC_LINE_VALUE`, `OTBL`.`INVOICE_NUMBER`, `OTBL`.`INVC_ITEM_DESCRIPTION`, `OTBL`.`INVC_START_DT`, `OTBL`.`C4`, `OTBL`.`C7` FROM (SELECT `OTBL`.`PARTY_GROUP_KEY`, `OTBL`.`INVC_LINE_VALUE`, `OTBL`.`INVOICE_NUMBER`, `OTBL`.`INVC_ITEM_DESCRIPTION`, `OTBL`.`INVC_START_DT`, `OTBL`.`VENDOR_KEY`, `OTBL`.`VENDOR_GROUP_KEY`, `OTBL`.`PRD_KEY`, `OTBL`.`INVC_SLU_PROD`, `OTBL`.`MNTH_KEY`, `OTBL`.`PARTY_RO_KEY`, `OTBL`.`INVC_LINE_QUANTITY`, `OTBL`.`vendor_spend_key`, `OTBL`.`OEM_KEY`, `OTBL`.`C1`, `OTBL`.`PARTY_GROUP_CODE`, `OTBL`.`PARTY_GROUP_NAME`, `OTBL`.`PARTY_GROUP_NAME_ALIAS`, `OTBL`.`EFF_START_DT`, `OTBL`.`EFF_END_DT`, `OTBL`.`CRN_ROW_IND`, `OTBL`.`party_name_hash`, `OTBL`.`C2`, `OTBL`.`UNQ_IN_SRC`, `OTBL`.`VENDOR_NAME`, `OTBL`.`V_LEGAL_NAME`, `OTBL`.`V_BRAND_NAME`, `OTBL`.`C3`, `OTBL`.`C4`, `OTBL`.`VENDOR_NAME_ALIAS_old`, `OTBL`.`VENDOR_CATEGORY`, `OTBL`.`ADDR1`, `OTBL`.`ADDR2`, `OTBL`.`CITY`, `OTBL`.`STATE`, `OTBL`.`ZIP_Code`, `OTBL`.`CNTRY_CODE`, `OTBL`.`PHONE_NUMBER`, `OTBL`.`FAX_NUMBER`, `OTBL`.`TAX_IDENTIFICATION_NUMBER`, `OTBL`.`C5`, `OTBL`.`C6`, `OTBL`.`PRIORITY_FLAG`, `OTBL`.`DLTP_SUPPLIER_CLASS`, `OTBL`.`VIZIENT_SUPPLIER_FLAG`, `OTBL`.`VAR_VERIFIED_FLAG`, `OTBL`.`IT_SUPPLIER_FLAG`, `OTBL`.`vendor_type`, `OTBL`.`Exclusion_from_contracting_opportunities`, `ITBL`.`PRD_COMMODITY`, `ITBL`.`C1` AS `C7`, `ITBL`.`prd_key` AS `C8` FROM (SELECT `OTBL`.`PARTY_GROUP_KEY`, `OTBL`.`INVC_LINE_VALUE`, `OTBL`.`INVOICE_NUMBER`, `OTBL`.`INVC_ITEM_DESCRIPTION`, `OTBL`.`INVC_START_DT`, `OTBL`.`VENDOR_KEY`, `OTBL`.`VENDOR_GROUP_KEY`, `OTBL`.`PRD_KEY`, `OTBL`.`INVC_SLU_PROD`, `OTBL`.`MNTH_KEY`, `OTBL`.`PARTY_RO_KEY`, `OTBL`.`INVC_LINE_QUANTITY`, `OTBL`.`vendor_spend_key`, `OTBL`.`OEM_KEY`, `OTBL`.`C1`, `OTBL`.`PARTY_GROUP_CODE`, `OTBL`.`PARTY_GROUP_NAME`, `OTBL`.`PARTY_GROUP_NAME_ALIAS`, `OTBL`.`EFF_START_DT`, `OTBL`.`EFF_END_DT`, `OTBL`.`CRN_ROW_IND`, `OTBL`.`party_name_hash`, `ITBL`.`VENDOR_KEY` AS `C2`, `ITBL`.`UNQ_IN_SRC`, `ITBL`.`VENDOR_NAME`, `ITBL`.`V_LEGAL_NAME`, `ITBL`.`V_BRAND_NAME`, `ITBL`.`VENDOR_GROUP_KEY` AS `C3`, `ITBL`.`C1` AS `C4`, `ITBL`.`VENDOR_NAME_ALIAS_old`, `ITBL`.`VENDOR_CATEGORY`, `ITBL`.`ADDR1`, `ITBL`.`ADDR2`, `ITBL`.`CITY`, `ITBL`.`STATE`, `ITBL`.`ZIP_Code`, `ITBL`.`CNTRY_CODE`, `ITBL`.`PHONE_NUMBER`, `ITBL`.`FAX_NUMBER`, `ITBL`.`TAX_IDENTIFICATION_NUMBER`, `ITBL`.`EFF_START_DT` AS `C5`, `ITBL`.`EFF_END_DT` AS `C6`, `ITBL`.`PRIORITY_FLAG`, `ITBL`.`DLTP_SUPPLIER_CLASS`, `ITBL`.`VIZIENT_SUPPLIER_FLAG`, `ITBL`.`VAR_VERIFIED_FLAG`, `ITBL`.`IT_SUPPLIER_FLAG`, `ITBL`.`vendor_type`, `ITBL`.`Exclusion_from_contracting_opportunities` FROM (SELECT `OTBL`.`PARTY_GROUP_KEY`, `OTBL`.`INVC_LINE_VALUE`, `OTBL`.`INVOICE_NUMBER`, `OTBL`.`INVC_ITEM_DESCRIPTION`, `OTBL`.`INVC_START_DT`, `OTBL`.`VENDOR_KEY`, `OTBL`.`VENDOR_GROUP_KEY`, `OTBL`.`PRD_KEY`, `OTBL`.`INVC_SLU_PROD`, `OTBL`.`MNTH_KEY`, `OTBL`.`PARTY_RO_KEY`, `OTBL`.`INVC_LINE_QUANTITY`, `OTBL`.`vendor_spend_key`, `OTBL`.`OEM_KEY`, `ITBL`.`PARTY_GROUP_KEY` AS `C1`, `ITBL`.`PARTY_GROUP_CODE`, `ITBL`.`PARTY_GROUP_NAME`, `ITBL`.`PARTY_GROUP_NAME_ALIAS`, `ITBL`.`EFF_START_DT`, `ITBL`.`EFF_END_DT`, `ITBL`.`CRN_ROW_IND`, `ITBL`.`party_name_hash` FROM `l4_aggr_db`.`fact_invoice_details_ref` AS `OTBL` INNER JOIN (SELECT `PARTY_GROUP_KEY`, `PARTY_GROUP_CODE`, `PARTY_GROUP_NAME`, `PARTY_GROUP_NAME_ALIAS`, `EFF_START_DT`, `EFF_END_DT`, `CRN_ROW_IND`, `party_name_hash` FROM `l3_dm_db`.`dim_party_group` WHERE `PARTY_GROUP_NAME_ALIAS` = 'Member4') AS `ITBL` ON `OTBL`.`PARTY_GROUP_KEY` = `ITBL`.`PARTY_GROUP_KEY`) AS `OTBL` INNER JOIN (SELECT `VENDOR_KEY`, `UNQ_IN_SRC`, `VENDOR_NAME`, `V_LEGAL_NAME`, `V_BRAND_NAME`, `VENDOR_GROUP_KEY`, replace(`VENDOR_NAME_ALIAS`, 'DUKE', 'COMPUTER') AS `C1`, `VENDOR_NAME_ALIAS_old`, `VENDOR_CATEGORY`, `ADDR1`, `ADDR2`, `CITY`, `STATE`, `ZIP_Code`, `CNTRY_CODE`, `PHONE_NUMBER`, `FAX_NUMBER`, `TAX_IDENTIFICATION_NUMBER`, `EFF_START_DT`, `EFF_END_DT`, `PRIORITY_FLAG`, `DLTP_SUPPLIER_CLASS`, `VIZIENT_SUPPLIER_FLAG`, `VAR_VERIFIED_FLAG`, `IT_SUPPLIER_FLAG`, `vendor_type`, `Exclusion_from_contracting_opportunities` FROM `l3_dm_db`.`dim_vendor`) AS `ITBL` ON `OTBL`.`VENDOR_KEY` = `ITBL`.`VENDOR_KEY`) AS `OTBL` INNER JOIN (SELECT `PRD_COMMODITY`, CASE WHEN (NOT (`segment_flag` IS NULL)) AND (`segment_flag` = 1) THEN 'OTHERS' ELSE CASE WHEN (NOT (`PRD_COMMODITY` IS NULL)) AND (`PRD_COMMODITY` = 'Others') THEN 'OTHERS' ELSE CASE WHEN (NOT (`PRD_COMMODITY` IS NULL)) AND (`PRD_COMMODITY` = 'Other') THEN 'OTHERS' ELSE CASE WHEN (`PRD_COMMODITY` IS NULL) OR (`PRD_COMMODITY` = '') THEN 'OTHERS' ELSE `PRD_COMMODITY` END END END END AS `C1`, `prd_key` FROM `l3_dm_db`.`dim_prd` WHERE `PRD_COMMODITY` = 'NOTEBOOK COMPUTERS') AS `ITBL` ON `OTBL`.`PRD_KEY` = `ITBL`.`prd_key`) AS `OTBL` INNER JOIN (SELECT `mnth_key`, `C2` FROM (SELECT `mnth_key`, CASE WHEN (NOT (`C1` IS NULL)) AND (`C1` = 1) THEN 'Last 12 Months' ELSE 'Previous Months' END AS `C2` FROM (SELECT `mnth_key`, CASE WHEN NOT (NOT (`mnth_key` IN ('202208', '202307', '202306', '202305', '202304', '202303', '202302', '202301', '202212', '202211', '202210', '202209'))) THEN 1 ELSE 0 END AS `C1` FROM `l3_dm_db`.`dim_month`) AS `ITBL`) AS `ITBL` WHERE `C2` = 'Last 12 Months') AS `ITBL` ON `OTBL`.`MNTH_KEY` = `ITBL`.`mnth_key`) AS `ITBL` GROUP BY `C4`, `C7`, `INVOICE_NUMBER`, `INVC_ITEM_DESCRIPTION`, `INVC_START_DT`) AS `ITBL` WHERE NOT (`C1` IS NULL) LIMIT 1000001
+To install Jenkins
+
+sudo yum install jenkins java-1.8.0-openjdk-devel -y
+
+Start Jenkins as a service
+
+sudo systemctl start jenkins
+
+We also need git so install it by the following command
+
+sudo yum install git -y
+
+Now start docker services
+
+sudo service docker start
+
+Add the ec2-user to the docker group, so you can execute Docker commands without using sudo
+
+sudo usermod -a -G docker ec2-user
+
+After that restart Jenkins and Docker by following commands
+
+sudo service jenkins restart
+
+sudo service docker restart
+
+
+---------------
+
+
+pipeline {
+ agent any
+ environment {
+ AWS_ACCOUNT_ID="YOUR_ACCOUNT_ID_HERE"
+ AWS_DEFAULT_REGION="CREATED_AWS_ECR_CONTAINER_REPO_REGION" 
+ IMAGE_REPO_NAME="ECR_REPO_NAME"
+ IMAGE_TAG="latest"
+ REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+ }
+ 
+ stages {
+ 
+ stage('Logging into AWS ECR') {
+ steps {
+ script {
+ sh "aws ecr get-login-password - region ${AWS_DEFAULT_REGION} | docker login - username AWS - password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+ }
+ 
+ }
+ }
+ 
+ stage('Cloning Git') {
+ steps {
+ checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/sd031/aws_codebuild_codedeploy_nodeJs_demo.git']]]) 
+ }
+ }
+ 
+ // Building Docker images
+ stage('Building image') {
+ steps{
+ script {
+ dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+ }
+ }
+ }
+ 
+ // Uploading Docker images into AWS ECR
+ stage('Pushing to ECR') {
+ steps{ 
+ script {
+ sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
+ sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+ }
+ }
+ }
+ }
+}
+
+

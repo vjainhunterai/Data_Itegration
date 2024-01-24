@@ -77,3 +77,11 @@ pipeline {
 }
 
 
+
+-----------------------
+
+437373745257.dkr.ecr.us-east-1.amazonaws.com/hunterai-de:latest
+
+
+
+

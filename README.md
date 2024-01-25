@@ -83,5 +83,15 @@ pipeline {
 437373745257.dkr.ecr.us-east-1.amazonaws.com/hunterai-de:latest
 
 
+--------------------------
+
+
+[ec2-user@ip-172-31-18-166 ~]$ mysql -h gpo-db.c969yoyq9cyy.us-east-1.rds.amazonaws.com -u rdsdevadmin -p
+Enter password:
+ERROR 2059 (HY000): Authentication plugin 'caching_sha2_password' cannot be loaded: /usr/lib64/mysql/plugin/caching_sha2_password.so: cannot open shared object file: No such file or directory
+
+
+
+
 
 

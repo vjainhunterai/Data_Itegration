@@ -191,7 +191,19 @@ sudo amazon-linux-extras install epel -y
 
 sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm 
 
-sudo yum install mysql-community-server 
+sudo yum install mysql-community-server
+
+
+-----------------------------------------
+
+
+database url : gpo-db.c969yoyq9cyy.us-east-1.rds.amazonaws.com
+port  : 3306
+schema : metadata
+user : vineet
+Password : Gpohealth!@!
+
+--------------------------------------------------
 
 
 

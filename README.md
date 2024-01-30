@@ -160,6 +160,33 @@ sed i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /e
 yum update -y
 yum install -y mariadb
 
+-----------------------
+
+
+sudo rpm -Uvh https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+
+
+sudo sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/mysql-community.repo
+
+
+sudo yum --enablerepo=mysql80-community install mysql-community-server
+
+service mysqld start
+
+sudo grep "A temporary password" /var/log/mysqld.log
+
+
+mysql_secure_installation 
+
+
+service mysqld restart
+chkconfig mysqld on
+
+mysql -u root -p
+
+
+
+
 
 
 

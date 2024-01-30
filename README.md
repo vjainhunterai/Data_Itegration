@@ -185,6 +185,15 @@ chkconfig mysqld on
 mysql -u root -p
 
 
+-------------------
+
+sudo amazon-linux-extras install epel -y 
+
+sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm 
+
+sudo yum install mysql-community-server 
+
+
 
 
 

@@ -385,6 +385,14 @@ CentOS Linux 8 - AppStream                       13  B/s |  38  B     00:02
 [0mThe command '/bin/sh -c yum install -y java-${java_version}-openjdk-devel &&     alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 999999 &&     alternatives --set java ${JAVA_HOME}/bin/java' returned a non-zero code: 1
 
 
+------------------------------
+
+
+CentOS Linux 8 - AppStream                      218  B/s |  38  B     00:00    
+[91mError: Failed to download metadata for repo 'appstream': Cannot prepare internal mirrorlist: No URLs in mirrorlist
+[0mThe command '/bin/sh -c yum makecache' returned a non-zero code: 1
+
+
 
 
 

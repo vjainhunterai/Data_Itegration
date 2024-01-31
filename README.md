@@ -279,6 +279,113 @@ java.security.InvalidKeyException: Illegal key size
 
 
 
+ -------------------------------------
+
+
+ [Jenkins]Jenkins
+Search (CTRL+K)
+1
+2
+vineet Jain
+
+log out
+Dashboard
+dockerfiletesttoecr
+#44
+Status
+Changes
+Console Output
+View as plain text
+Edit Build Information
+Delete build ‘#44’
+Git Build Data
+
+Restart from Stage
+Replay
+Pipeline Steps
+Workspaces
+Previous Build
+Console Output
+Started by user vineet Jain
+Obtained JenkinsFile from git https://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@github.com/GPOAdmin/Integration.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/dockerfiletesttoecr
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: git
+using credential DockerTest
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/dockerfiletesttoecr/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://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@github.com/GPOAdmin/Integration.git # timeout=10
+Fetching upstream changes from https://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@github.com/GPOAdmin/Integration.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.40.1'
+using GIT_ASKPASS to set credentials DockerTest
+ > git fetch --tags --force --progress -- https://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@github.com/GPOAdmin/Integration.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/dockertest^{commit} # timeout=10
+Checking out Revision bb08d840e644356c230a81aa8fb7f8155e844ae0 (refs/remotes/origin/dockertest)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f bb08d840e644356c230a81aa8fb7f8155e844ae0 # timeout=10
+Commit message: "Update JenkinsFile"
+ > git rev-list --no-walk 6c93340fdc29d14c25e284da2f99b30c811d30f1 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Logging into AWS ECR)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ docker login --username AWS --password-stdin 437373745257.dkr.ecr.us-east-1.amazonaws.com
++ aws ecr get-login-password --region us-east-1
+WARNING! Your password will be stored unencrypted in /var/lib/jenkins/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Building image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker build -t hunterai-de:L25 .
+Sending build context to Docker daemon  118.1MB
+
+Step 1/19 : FROM centos:latest
+ ---> 5d0da3dc9764
+Step 2/19 : ARG java_version=17
+ ---> Running in 4c6bb3ff33ed
+Removing intermediate container 4c6bb3ff33ed
+ ---> 07e28a7d07c0
+Step 3/19 : ENV JAVA_HOME /usr/lib/jvm/java-${java_version}-openjdk
+ ---> Running in bdb2dbc2f587
+Removing intermediate container bdb2dbc2f587
+ ---> 5cd8194f9c74
+Step 4/19 : ENV PATH $JAVA_HOME/bin:$PATH
+ ---> Running in 6748efa2a82e
+Removing intermediate container 6748efa2a82e
+ ---> 1d5594a17225
+Step 5/19 : RUN yum install -y java-${java_version}-openjdk-devel &&     alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 999999 &&     alternatives --set java ${JAVA_HOME}/bin/java
+ ---> Running in 41c8f07e434a
+CentOS Linux 8 - AppStream                       13  B/s |  38  B     00:02    
+[91mError: Failed to download metadata for repo 'appstream': Cannot prepare internal mirrorlist: No URLs in mirrorlist
+[0mThe command '/bin/sh -c yum install -y java-${java_version}-openjdk-devel &&     alternatives --install /usr/bin/java java ${JAVA_HOME}/bin/java 999999 &&     alternatives --set java ${JAVA_HOME}/bin/java' returned a non-zero code: 1
+
+
+
 
 
 

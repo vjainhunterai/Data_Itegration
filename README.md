@@ -393,6 +393,17 @@ CentOS Linux 8 - AppStream                      218  B/s |  38  B     00:00
 [0mThe command '/bin/sh -c yum makecache' returned a non-zero code: 1
 
 
+--------------------------------------
+
+ SELECT table_name AS `Table`,
+ ROUND(((data_length + index_length) / 1024 / 1024), 2) AS `Size (MB)`
+ FROM information_schema.TABLES
+ WHERE table_schema = "your_database_name"
+ ORDER BY (data_length + index_length) DESC;
+
+ 
+
+
 
 
 

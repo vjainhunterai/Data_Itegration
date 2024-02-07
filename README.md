@@ -401,6 +401,16 @@ CentOS Linux 8 - AppStream                      218  B/s |  38  B     00:00
  WHERE table_schema = "your_database_name"
  ORDER BY (data_length + index_length) DESC;
 
+
+
+ -----------------------------------
+
+
+ Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/auth": dial unix /var/run/docker.sock: connect: permission denied
+
+
+ -----------------------------------
+
  
 
 

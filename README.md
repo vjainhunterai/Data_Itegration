@@ -438,6 +438,10 @@ done
 find . -type f -name '*.zip' -exec sh -c 'unzip -d "${1%.*}" "$1"' _ {} \;
 
 
+find . -type f -name '*.zip' -exec sh -c 'unzip -d "${1%.*}" "$1"' sh {} \;
+
+
+
 
  
 

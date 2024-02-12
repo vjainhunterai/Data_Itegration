@@ -442,6 +442,16 @@ find . -type f -name '*.zip' -exec sh -c 'unzip -d "${1%.*}" "$1"' sh {} \;
 
 
 
+----------------------------------------------------
+
+
+Traceback (most recent call last):
+  File "splitFile_v7.py", line 88, in <module>
+    inputFile = open(file, "rt",errors="ignore")
+TypeError: 'errors' is an invalid keyword argument for this function
+
+
+
 
  
 

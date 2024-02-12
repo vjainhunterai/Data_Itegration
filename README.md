@@ -411,6 +411,15 @@ CentOS Linux 8 - AppStream                      218  B/s |  38  B     00:00
 
  -----------------------------------
 
+
+ [ec2-user@ip-172-31-18-166 ~]$ sudo docker run dockerfile:latest
+OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x000000050f000000, 8413773824, 0) failed; error='Not enough space' (errno=12)
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 8413773824 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /usr/src/app/Job_L1_Invoice_Master/hs_err_pid9.log
+
  
 
 

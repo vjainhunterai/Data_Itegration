@@ -427,6 +427,15 @@ OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x000000050f000000, 84
 sudo docker run -e JAVA_OPTS='-Xmx2g -Xms512m' dockerfile:latest
 
 
+---------------------
+
+
+for zip_file in *.zip; do
+    unzip -d "${zip_file%.*}" "$zip_file"
+done
+
+
+
  
 
 

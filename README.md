@@ -435,6 +435,9 @@ for zip_file in *.zip; do
 done
 
 
+find . -type f -name '*.zip' -exec sh -c 'unzip -d "${1%.*}" "$1"' _ {} \;
+
+
 
  
 

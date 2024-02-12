@@ -420,6 +420,13 @@ OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x000000050f000000, 84
 # An error report file with more information is saved as:
 # /usr/src/app/Job_L1_Invoice_Master/hs_err_pid9.log
 
+
+----------------------
+
+
+sudo docker run -e JAVA_OPTS='-Xmx2g -Xms512m' dockerfile:latest
+
+
  
 
 

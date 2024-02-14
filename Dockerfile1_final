@@ -22,3 +22,17 @@ RUN pwd && ls -s
 CMD ["sh","./Docker_test/Docker_test_run.sh"]
  # Command to execute
 
+pipeline{
+    agent {
+        ecs {
+          inheritFrom 'ecs_test'
+          cpu 1000
+        } 
+    }
+    stages{
+        stage("Here goes nothin"){
+          sh 'echo hello'
+        }
+    }
+}
+

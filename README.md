@@ -457,6 +457,9 @@ Traceback (most recent call last):
 TypeError: 'errors' is an invalid keyword argument for this function
 
 
+arn:aws:ecs:us-east-1:437373745257:task-definition/Talend_L2_job_dev:1
+
+
 
 
  

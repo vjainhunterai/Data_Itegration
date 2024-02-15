@@ -441,6 +441,12 @@ find . -type f -name '*.zip' -exec sh -c 'unzip -d "${1%.*}" "$1"' _ {} \;
 find . -type f -name '*.zip' -exec sh -c 'unzip -d "${1%.*}" "$1"' sh {} \;
 
 
+437373745257.dkr.ecr.us-east-1.amazonaws.com/hunterai-de:dev_march24_l2_v1
+
+
+
+
+
 
 ----------------------------------------------------
 

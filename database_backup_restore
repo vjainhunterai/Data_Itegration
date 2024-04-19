@@ -1,10 +1,40 @@
 mysqldump -u username -p password database_name > database_dump.sql
 
 
-FROM mysql:latest
+FROM alpine:latest
 
-COPY database_dump.sql /var/lib/mysql/
+# Install MySQL client
+RUN apk add --no-cache mysql-client
 
-RUN mysql -u root -p${MYSQL_ROOT_PASSWORD} < /var/lib/mysql/database_dump.sql
+# Copy your MySQL dump file into the container
+COPY your_dump.sql /tmp/
 
-EXPOSE 3306
+# Copy the script into the container
+COPY restore.sh /
+
+# Set execute permissions on the script
+RUN chmod +x /restore.sh
+
+# Define environment variables for MySQL connection
+ENV MYSQL_HOST="your_rds_host" \
+    MYSQL_PORT="your_rds_port" \
+    MYSQL_USER="your_rds_username" \
+    MYSQL_PASSWORD="your_rds_password" \
+    MYSQL_DATABASE="your_database_name" \
+    MYSQL_DUMP_FILE="/tmp/your_dump.sql"
+
+# Run the script to restore the dump when the container starts
+CMD ["/restore.sh"]
+
+
+
+------------------
+
+
+#!/bin/sh
+
+# Restore MySQL dump into RDS instance
+mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER -p"$MYSQL_PASSWORD" $MYSQL_DATABASE < $MYSQL_DUMP_FILE
+
+
+

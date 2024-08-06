@@ -1,0 +1,195 @@
+import pandas as pd
+from datetime import datetime
+import uuid
+from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, DateTime
+from sqlalchemy.orm import sessionmaker
+
+class DatabaseHandler:
+    def __init__(self, db_url):
+        self.engine = create_engine(db_url)
+        self.connection = self.engine.connect()
+        self.metadata = MetaData()
+
+        # Define the log table structure
+        self.log_table = Table('etl_log', self.metadata,
+                               Column('id', Integer, primary_key=True, autoincrement=True),
+                               Column('exec_id', String(19)),
+                               Column('job_name', String(255)),
+                               Column('step_name', String(255)),
+                               Column('start_time', DateTime),
+                               Column('end_time', DateTime),
+                               Column('status', String(50)),
+                               Column('message', String(255)),
+                               Column('timestamp', DateTime, default=datetime.now))
+
+        # Define the audit table structure
+        self.audit_table = Table('etl_audit', self.metadata,
+                                 Column('exec_id', String(19), primary_key=True),
+                                 Column('job_name', String(255)),
+                                 Column('file_name', String(500)),
+                                 Column('start_time', DateTime),
+                                 Column('end_time', DateTime),
+                                 Column('src_cnt', Integer),
+                                 Column('tgt_cnt', Integer),
+                                 Column('lkp_cnt', Integer),
+                                 Column('rej_cnt', Integer),
+                                 Column('job_status', String(255)),
+                                 Column('crt_dttm', DateTime, default=datetime.now))
+        self.metadata.create_all(self.engine)  # Create tables if they don't exist
+
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()
+
+    def insert_log_entry(self, log_entry):
+        try:
+            ins = self.log_table.insert().values(log_entry)
+            self.connection.execute(ins)
+        except Exception as e:
+            print(f"Error inserting log record: {e}")
+
+    def insert_audit_entry(self, audit_entry):
+        try:
+            ins = self.audit_table.insert().values(audit_entry)
+            self.connection.execute(ins)
+        except Exception as e:
+            print(f"Error inserting audit record: {e}")
+
+    def close(self):
+        self.connection.close()
+
+
+class StepLogger:
+    def __init__(self, db_handler):
+        self.db_handler = db_handler
+
+    def log_step(self, exec_id, job_name, step_name, start_time, end_time, status, message):
+        log_entry = {
+            'exec_id': exec_id,
+            'job_name': job_name,
+            'step_name': step_name,
+            'start_time': start_time,
+            'end_time': end_time,
+            'status': status,
+            'message': message,
+            'timestamp': datetime.now()
+        }
+        self.db_handler.insert_log_entry(log_entry)
+
+
+class AuditLogger:
+    def __init__(self, db_handler):
+        self.db_handler = db_handler
+
+    def log_audit(self, audit_entry):
+        self.db_handler.insert_audit_entry(audit_entry)
+
+
+def extract(file_name):
+    try:
+        data = pd.read_csv(file_name)
+        total_rec_cnt = len(data)
+        return data, total_rec_cnt, "Success", "Data extraction successful"
+    except Exception as e:
+        return None, 0, "Failed", str(e)
+
+
+def transform(data):
+    try:
+        data['new_column'] = data['existing_column'] * 2
+        processed_cnt = len(data)
+        return data, processed_cnt, "Success", "Data transformation successful"
+    except Exception as e:
+        return None, 0, "Failed", str(e)
+
+
+def load(data, db_url):
+    try:
+        engine = create_engine(db_url)
+        data.to_sql('table_name', con=engine, if_exists='replace', index=False)
+        return "Success", "Data loading successful"
+    except Exception as e:
+        return "Failed", str(e)
+
+
+def etl_pipeline(file_name, db_url):
+    exec_id = str(uuid.uuid4())[:10]
+    job_name = "ETL Job"
+    db_handler = DatabaseHandler(db_url)
+    step_logger = StepLogger(db_handler)
+    audit_logger = AuditLogger(db_handler)
+
+    print(f"ETL pipeline started with exec_id: {exec_id}")
+
+    start_time = datetime.now()
+
+    # Extraction step
+    data, total_rec_cnt, status, message = extract(file_name)
+    step_logger.log_step(exec_id, job_name, "Extraction", start_time, datetime.now(), status, message)
+    if status == "Failed":
+        audit_entry = {
+            'exec_id': exec_id,
+            'job_name': job_name,
+            'file_name': file_name,
+            'start_time': start_time,
+            'end_time': datetime.now(),
+            'src_cnt': total_rec_cnt,
+            'tgt_cnt': 0,
+            'lkp_cnt': 0,
+            'rej_cnt': 0,
+            'job_status': status,
+            'crt_dttm': datetime.now()
+        }
+        audit_logger.log_audit(audit_entry)
+        db_handler.close()
+        return
+
+    # Transformation step
+    start_time = datetime.now()
+    data, processed_cnt, status, message = transform(data)
+    step_logger.log_step(exec_id, job_name, "Transformation", start_time, datetime.now(), status, message)
+    if status == "Failed":
+        audit_entry = {
+            'exec_id': exec_id,
+            'job_name': job_name,
+            'file_name': file_name,
+            'start_time': start_time,
+            'end_time': datetime.now(),
+            'src_cnt': total_rec_cnt,
+            'tgt_cnt': 0,
+            'lkp_cnt': 0,
+            'rej_cnt': 0,
+            'job_status': status,
+            'crt_dttm': datetime.now()
+        }
+        audit_logger.log_audit(audit_entry)
+        db_handler.close()
+        return
+
+    # Loading step
+    start_time = datetime.now()
+    status, message = load(data, db_url)
+    step_logger.log_step(exec_id, job_name, "Loading", start_time, datetime.now(), status, message)
+
+    # Final audit entry
+    audit_entry = {
+        'exec_id': exec_id,
+        'job_name': job_name,
+        'file_name': file_name,
+        'start_time': start_time,
+        'end_time': datetime.now(),
+        'src_cnt': total_rec_cnt,
+        'tgt_cnt': processed_cnt if status == "Success" else 0,
+        'lkp_cnt': 0,
+        'rej_cnt': total_rec_cnt - (processed_cnt if status == "Success" else 0),
+        'job_status': status,
+        'crt_dttm': datetime.now()
+    }
+    audit_logger.log_audit(audit_entry)
+
+    db_handler.close()
+
+
+# Example usage
+db_url = 'mysql+pymysql://admin:Gpoproddb!#!@prod-db.c969yoyq9cyy.us-east-1.rds.amazonaws.com/stg_tbl'
+file_name = 'data_source.csv'
+etl_pipeline(file_name, db_url)
